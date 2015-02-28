@@ -26,6 +26,9 @@ Down.prototype = {
         displacement: true, 
         recent: true
     },
+    str: function(){
+        return this.recent[0]+", "+this.recent[1];
+    }
 }
 var Input = function(id, care){
     this.elem = document.getElementById(id);
@@ -71,7 +74,7 @@ Input.prototype = {
         this.state = false;
     },
     getPointerEvent: function(event) {
-        return event.targetTouches ? event.targetTouches : [event];
+        return event.changeTouches ? event.changeTouches : [event];
     },
     ontap: function(){},
     ondown: function(){},

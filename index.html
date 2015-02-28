@@ -3,9 +3,6 @@
 <script>
 n = new Input("h");
 interval = setInterval(function(){
-//    n.elem.innerHTML = n.touch.map(function(obj){
-//            if(obj){
-//            return [obj.pageX, obj.pageY];
-//        }}).join("<br/>");
+    n.elem.innerHTML = n.downs.map(function(obj){return obj.str()}).join("<br>")
 }, 1000);
 </script>
