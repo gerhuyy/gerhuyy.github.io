@@ -1,9 +1,9 @@
 var Input = function(id){
     this.elem = document.getElementById(id);
     
-    this.touchStarted = false; // detect if a touch event is sarted
-    this.currX = 0;
-    this.currY = 0;
+    this.state = false; // detect if a touch event is started
+    this.x = 0;
+    this.y = 0;
     this.cachedX = 0;
     this.cachedY = 0;
     var obj = this;
@@ -22,38 +22,43 @@ var Input = function(id){
 Input.prototype = {
     start: function (e){
         e.preventDefault();
+        this.touch = e.targetTouches instanceof Array;
         var pointer = this.getPointerEvent(e);
         // caching the current x
-        this.cachedX = this.currX = pointer.pageX;
+        this.cachedX = this.x = pointer.pageX;
         // caching the current y
-        this.cachedY = this.currY = pointer.pageY;
+        this.cachedY = this.y = pointer.pageY;
         // a touch event is detected      
-        this.touchStarted = true;
+        this.state = true;
         // detecting if after 200ms the finger is still in the same position
         setTimeout(function (){
-            if ((this.cachedX === this.currX) && !this.touchStarted && (this.cachedY === this.currY)) {
-                // Here you get the Tap event
+            if ((this.cachedX === this.x) && !this.touchStarted && (this.cachedY === this.y)) {
+                //this.ontap()
             }
         },200);
     },
     move: function (e){
         e.preventDefault();
+        this.touch = e.targetTouches instanceof Array;
         var pointer = this.getPointerEvent(e);
-        this.currX = pointer.pageX;
-        this.currY = pointer.pageY;
-        if(this.touchStarted) {
-             console.log("swiper no swiping")
+        this.x = pointer.pageX;
+        this.y = pointer.pageY;
+        if(this.state) {
+             this.onmove()
         }
     },
     end: function (e){
         e.preventDefault();
-        // here we can consider finished the touch event
-        this.touchStarted = false;
+        this.touch = typeof e.targetTouches === typeof [];
+        this.state = false;
+        this.onup();
     },
     getPointerEvent: function(event) {
         return event.targetTouches ? event.targetTouches[0] : event;
     },
+    ontap: function(){},
     ondown: function(){},
     onmove: function(){},
+    onup: function(){},
     
 };
