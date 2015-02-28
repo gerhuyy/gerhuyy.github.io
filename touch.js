@@ -1,3 +1,9 @@
+mainCanvas.canvas.width = document.body.clientWidth;
+mainCanvas.canvas.height = innerHeight-5;
+addEventListener("resize", function(e){
+    mainCanvas.canvas.width = document.body.clientWidth;
+    mainCanvas.canvas.height = innerHeight-5;
+});
 var Down = function(x, y, care){
     this.start = [x, y];
     this.add(x, y);
