@@ -62,15 +62,16 @@ Input.prototype = {
     downs: [],
     start: function (e){
         e.preventDefault();
-        var pointers = this.getPointerEvent(e);
-        this.downs = [].map.call(pointers, function(obj){
-            return new Down(obj.pageX, obj.pageY, this.care);
-        });
-        if(pointers.length === 1){
-            this.down = this.downs[0];
+        if(e.touches){
+            var pointers = this.getPointerEvent(e);
+            this.downs = [];
+            for(var i = 0; i<pointers.length; i++){
+                this.downs[pointers[i].identifier] = Down(pointers[i].pageX, pointers[i].pageY, this.care);
+            };
+            this.down = this.downs[pointers[0].identifier];
         }else{
-            this.down = null;
-        };
+            this.down = new Down(e.pageX, e.pageY, this.care);
+        }
         return false;
     },
     move: function (e){
