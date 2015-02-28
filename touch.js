@@ -46,15 +46,15 @@ var Input = function(id, care){
     this.y = 0;
     var obj = this;
     //setting the events listeners
-    this.elem.addEventListener("touchstart", function(e){obj.start(e)});
-    this.elem.addEventListener("mousedown", function(e){obj.start(e)});
+    this.elem.addEventListener("touchstart", function(e){return obj.start(e)});
+    this.elem.addEventListener("mousedown", function(e){return obj.start(e)});
 
-    this.elem.addEventListener("touchmove", function(e){obj.move(e)});
-    this.elem.addEventListener("mousemove", function(e){obj.move(e)});
+    this.elem.addEventListener("touchmove", function(e){return obj.move(e)});
+    this.elem.addEventListener("mousemove", function(e){return obj.move(e)});
     
-    this.elem.addEventListener("touchend", function(e){obj.end(e)});
-    this.elem.addEventListener("mouseup", function(e){obj.end(e)});
-    this.elem.addEventListener("touchcancel", function(e){obj.end(e)});
+    this.elem.addEventListener("touchend", function(e){return obj.end(e)});
+    this.elem.addEventListener("mouseup", function(e){return obj.end(e)});
+    this.elem.addEventListener("touchcancel", function(e){return obj.end(e)});
     
 }
 Input.prototype = {
@@ -70,6 +70,7 @@ Input.prototype = {
         }else{
             this.down = null;
         };
+        return true;
     },
     move: function (e){
         e.stopPropagation()
@@ -78,11 +79,13 @@ Input.prototype = {
         for(var i = 0; i<Math.min(pointers.length, this.downs.length); i++){
             this.down.add(pointers[i].pageX, pointers[i].pageY);
         }
+        return true;
     },
     end: function (e){
         e.stopPropagation()
         console.log(e);
         this.state = false;
+        return true;
     },
     getPointerEvent: function(event) {
         return event.changeTouches ? event.changeTouches : [event];
