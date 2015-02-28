@@ -28,7 +28,7 @@ Down.prototype = {
     },
     str: function(){
         return this.recent[0]+", "+this.recent[1];
-    }
+    },
 }
 var Input = function(id, care){
     this.elem = document.getElementById(id);
@@ -52,6 +52,7 @@ var Input = function(id, care){
 Input.prototype = {
     downs: [],
     start: function (e){
+        e.stopPropagation()
         var pointers = this.getPointerEvent(e);
         this.downs = [].map.call(pointers, function(obj){
             return new Down(obj.pageX, obj.pageY, this.care);
@@ -63,6 +64,7 @@ Input.prototype = {
         };
     },
     move: function (e){
+        e.stopPropagation()
         var pointers = this.getPointerEvent(e);
         console.log(e.changedTouches);
         for(var i = 0; i<Math.min(pointers.length, this.downs.length); i++){
@@ -70,6 +72,7 @@ Input.prototype = {
         }
     },
     end: function (e){
+        e.stopPropagation()
         console.log(e);
         this.state = false;
     },
