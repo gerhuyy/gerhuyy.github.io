@@ -60,7 +60,7 @@ var Input = function(id, care){
 Input.prototype = {
     downs: [],
     start: function (e){
-        e.stopPropagation()
+        e.preventDefault();
         var pointers = this.getPointerEvent(e);
         this.downs = [].map.call(pointers, function(obj){
             return new Down(obj.pageX, obj.pageY, this.care);
@@ -73,7 +73,7 @@ Input.prototype = {
         return true;
     },
     move: function (e){
-        e.stopPropagation()
+        e.preventDefault();
         var pointers = this.getPointerEvent(e);
         console.log(e.changedTouches);
         for(var i = 0; i<Math.min(pointers.length, this.downs.length); i++){
@@ -82,7 +82,7 @@ Input.prototype = {
         return true;
     },
     end: function (e){
-        e.stopPropagation()
+        e.preventDefault();
         console.log(e);
         this.state = false;
         return true;
