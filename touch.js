@@ -22,7 +22,7 @@ var Input = function(id){
 Input.prototype = {
     start: function (e){
         e.preventDefault();
-        this.touch = e.targetTouches instanceof Array;
+        this.touch = typeof e.targetTouches === typeof [];
         var pointer = this.getPointerEvent(e);
         // caching the current x
         this.cachedX = this.x = pointer.pageX;
@@ -39,7 +39,7 @@ Input.prototype = {
     },
     move: function (e){
         e.preventDefault();
-        this.touch = e.targetTouches instanceof Array;
+        this.touch = typeof e.targetTouches === typeof [];
         var pointer = this.getPointerEvent(e);
         this.x = pointer.pageX;
         this.y = pointer.pageY;
