@@ -88,7 +88,7 @@ Input.prototype = {
         return false;
     },
     getPointerEvent: function(event) {
-        return event.changeTouches ? event.changeTouches : [event];
+        return event.targetTouches ? event.targetTouches : [event];
     },
     ontap: function(){},
     ondown: function(){},
