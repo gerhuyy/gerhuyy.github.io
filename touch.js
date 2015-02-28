@@ -1,8 +1,10 @@
-mainCanvas.canvas.width = document.body.clientWidth;
-mainCanvas.canvas.height = innerHeight-5;
+mainCanvas = {};
+mainCanvas.canvas = document.getElementById("h");
+mainCanvas.canvas.style.width = document.body.clientWidth-20;
+mainCanvas.canvas.style.height = innerHeight-50;
 addEventListener("resize", function(e){
-    mainCanvas.canvas.width = document.body.clientWidth;
-    mainCanvas.canvas.height = innerHeight-5;
+    mainCanvas.canvas.style.width = document.body.clientWidth-20;
+    mainCanvas.canvas.style.height = innerHeight-50;
 });
 var Down = function(x, y, care){
     this.start = [x, y];
