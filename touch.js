@@ -14,7 +14,7 @@ Down.prototype = {
         if(this.care.recent)      this.recent = [x, y];
                                   var dx = this.recent[0] - this.start[0],
                                       dy = this.recent[1] - this.start[1];
-        if(this.care.angle)       this.angle = Math.tan2(dy, dx);
+        if(this.care.angle)       this.angle = Math.atan2(dy, dx);
         if(this.care.displacement)this.displacement = Math.pow((Math.pow(dx, 2) + Math.pow(dy, 2)), 0.5);
     },
     end: function(){
@@ -51,9 +51,9 @@ Input.prototype = {
     start: function (e){
         var pointers = this.getPointerEvent(e);
         this.downs = [].map.call(pointers, function(obj){
-            return Down(obj.pageX, obj.pageY, this.care);
+            return new Down(obj.pageX, obj.pageY, this.care);
         });
-        if(pointer.length === 1){
+        if(pointers.length === 1){
             this.down = this.downs[0];
         }else{
             this.down = null;
@@ -61,6 +61,7 @@ Input.prototype = {
     },
     move: function (e){
         var pointers = this.getPointerEvent(e);
+        console.log(e.changedTouches);
         for(var i = 0; i<Math.min(pointers.length, this.downs.length); i++){
             this.down.add(pointers[i].pageX, pointers[i].pageY);
         }
