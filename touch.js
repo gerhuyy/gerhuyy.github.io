@@ -70,7 +70,7 @@ Input.prototype = {
         }else{
             this.down = null;
         };
-        return true;
+        return false;
     },
     move: function (e){
         e.preventDefault();
@@ -79,13 +79,13 @@ Input.prototype = {
         for(var i = 0; i<Math.min(pointers.length, this.downs.length); i++){
             this.down.add(pointers[i].pageX, pointers[i].pageY);
         }
-        return true;
+        return false;
     },
     end: function (e){
         e.preventDefault();
         console.log(e);
         this.state = false;
-        return true;
+        return false;
     },
     getPointerEvent: function(event) {
         return event.changeTouches ? event.changeTouches : [event];
