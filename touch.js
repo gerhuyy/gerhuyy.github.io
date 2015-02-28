@@ -6,6 +6,7 @@ addEventListener("resize", function(e){
     mainCanvas.canvas.style.width = document.body.clientWidth-20;
     mainCanvas.canvas.style.height = innerHeight-50;
 });
+
 var Down = function(x, y, care){
     this.start = [x, y];
     this.add(x, y);
@@ -32,7 +33,7 @@ Down.prototype = {
         all: true, 
         angle: true, 
         displacement: true, 
-        recent: true
+        recent: true,
     },
     str: function(){
         return this.recent[0]+", "+this.recent[1];
@@ -77,7 +78,7 @@ Input.prototype = {
         var pointers = this.getPointerEvent(e);
         console.log(e.changedTouches);
         for(var i = 0; i<Math.min(pointers.length, this.downs.length); i++){
-            this.down.add(pointers[i].pageX, pointers[i].pageY);
+            this.downs[i].add(pointers[i].pageX, pointers[i].pageY);
         }
         return false;
     },
