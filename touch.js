@@ -1,11 +1,38 @@
-var Input = function(id){
+var Down = function(x, y, care){
+    this.start = [x, y];
+    this.add(x, y);
+    if(care){
+        this.care = care;
+    };
+};
+Down.prototype = {
+    all: [],
+    state: true,
+    add: function(x, y){
+        if(!this.state)return;
+        if(this.care.all)         this.all.push([x, y]);
+        if(this.care.recent)      this.recent = [x, y];
+                                  var dx = this.recent[0] - this.start[0],
+                                      dy = this.recent[1] - this.start[1];
+        if(this.care.angle)       this.angle = Math.tan2(dy, dx);
+        if(this.care.displacement)this.displacement = Math.pow((Math.pow(dx, 2) + Math.pow(dy, 2)), 0.5);
+    },
+    end: function(){
+        this.state = false;
+    },
+    care: {
+        all: true, 
+        angle: true, 
+        displacement: true, 
+        recent: true
+    },
+}
+var Input = function(id, care){
     this.elem = document.getElementById(id);
-    
-    this.state = false; // detect if a touch event is started
+    this.care = care;
+    this.state = false;
     this.x = 0;
     this.y = 0;
-    this.cachedX = 0;
-    this.cachedY = 0;
     var obj = this;
     //setting the events listeners
     this.elem.addEventListener("touchstart", function(e){obj.start(e)});
@@ -20,41 +47,30 @@ var Input = function(id){
     
 }
 Input.prototype = {
+    downs: [],
     start: function (e){
-        e.preventDefault();
-        this.touch = typeof e.targetTouches === typeof [];
-        var pointer = this.getPointerEvent(e);
-        // caching the current x
-        this.cachedX = this.x = pointer.pageX;
-        // caching the current y
-        this.cachedY = this.y = pointer.pageY;
-        // a touch event is detected      
-        this.state = true;
-        // detecting if after 200ms the finger is still in the same position
-        setTimeout(function (){
-            if ((this.cachedX === this.x) && !this.touchStarted && (this.cachedY === this.y)) {
-                //this.ontap()
-            }
-        },200);
+        var pointers = this.getPointerEvent(e);
+        this.downs = [].map.call(pointers, function(obj){
+            return Down(obj.pageX, obj.pageY, this.care);
+        });
+        if(pointer.length === 1){
+            this.down = this.downs[0];
+        }else{
+            this.down = null;
+        };
     },
     move: function (e){
-        e.preventDefault();
-        this.touch = typeof e.targetTouches === typeof [];
-        var pointer = this.getPointerEvent(e);
-        this.x = pointer.pageX;
-        this.y = pointer.pageY;
-        if(this.state) {
-             this.onmove()
+        var pointers = this.getPointerEvent(e);
+        for(var i = 0; i<Math.min(pointers.length, this.downs.length); i++){
+            this.down.add(pointers[i].pageX, pointers[i].pageY);
         }
     },
     end: function (e){
-        e.preventDefault();
-        this.touch = typeof e.targetTouches === typeof [];
+        console.log(e);
         this.state = false;
-        this.onup();
     },
     getPointerEvent: function(event) {
-        return event.targetTouches ? event.targetTouches[0] : event;
+        return event.targetTouches ? event.targetTouches : [event];
     },
     ontap: function(){},
     ondown: function(){},
