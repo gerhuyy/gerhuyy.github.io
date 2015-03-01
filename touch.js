@@ -59,30 +59,29 @@ var Input = function(id, care){
     listen("touchend");
     listen("touchcancel");
     listen("mouseup");
-    this.elem.addEventListener("touchstart", function(e){return obj.start(e)});
-    this.elem.addEventListener("mousedown", function(e){return obj.start(e)});
-
-    this.elem.addEventListener("touchmove", function(e){return obj.move(e)});
-    this.elem.addEventListener("mousemove", function(e){return obj.move(e)});
-    
-    this.elem.addEventListener("touchend", function(e){return obj.end(e)});
-    this.elem.addEventListener("mouseup", function(e){return obj.end(e)});
-    this.elem.addEventListener("touchcancel", function(e){return obj.end(e)});
-    
 }
 Input.prototype = {
+    x: 0,
+    y: 0,
+    state: false,
     downs: [],
     touchstart: function(e){
-        var pointers = this.getPointerEvent(e);
+        var pointers = this.getTouches(e);
         this.downs = [];
         for(var i = 0; i<pointers.length; i++){
             this.downs[pointers[i].identifier] = Down(pointers[i].pageX, pointers[i].pageY, this.care);
         };
         this.down = this.downs[pointers[0].identifier];
-    };
-    mousedown
-    start: function (e){
-        e.preventDefault();
+        return false;
+    },
+    mousedown: function(e){
+        this.state = true;
+        this.x = e.pageX;
+        this.y = e.pageY;
+        this.down = Down(e.pageX, e.pageY, this.care);
+        return false;
+    }
+    start: function(e){
         if(e.touches){
             var pointers = this.getPointerEvent(e);
             this.downs = [];
@@ -95,7 +94,20 @@ Input.prototype = {
         }
         return false;
     },
-    move: function (e){
+    touchmove: function(e){
+        var pointers = this.getTouches(e);
+        for(var i = 0; i<pointers.length; i++){
+            this.downs[pointers[i].identifier].add(pointers[i].pageX, pointers[i].pageY);
+        };
+        return false;
+    },
+    mousemove: function(e){
+        this.x = e.pageX;
+        this.y = e.pageY;
+        this.down.add(e.pageX, e.pageY);
+        return false;
+    },
+    move: function(e){
         e.preventDefault();
         var pointers = this.getPointerEvent(e);
         console.log(e.changedTouches);
@@ -104,18 +116,33 @@ Input.prototype = {
         }
         return false;
     },
-    end: function (e){
-        e.preventDefault();
+    touchend: function(e){
+        var pointers = this.getTouches(e);
+        for(var i = 0; i<pointers.length; i++){
+            this.downs[pointers[i].identifier].end();
+        }
+        return false;
+    }
+    touchcancel: function(e){
+       var pointers = this.getTouches(e);
+        for(var i = 0; i<pointers.length; i++){
+            delete this.downs[pointers[i].identifier];
+        }
+        return false;
+    }
+    mouseup: function(e){
+        this.state = false;
+        this.x = e.pageX;
+        this.y = e.pageY;
+        this.down.end()
+        return false;
+    }
+    end: function(e){
         console.log(e);
         this.state = false;
         return false;
     },
-    getPointerEvent: function(event) {
-        return event.targetTouches ? event.targetTouches : [event];
+    getTouches: function(e) {
+        return e.targetTouches;
     },
-    ontap: function(){},
-    ondown: function(){},
-    onmove: function(){},
-    onup: function(){},
-    
 };
