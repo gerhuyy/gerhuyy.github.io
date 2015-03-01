@@ -72,6 +72,7 @@ Input.prototype = {
             this.downs[pointers[i].identifier] = new Down(pointers[i].pageX, pointers[i].pageY, this.care);
         };
         this.down = this.downs[pointers[0].identifier];
+        console.log(this.downs);
         return false;
     },
     mousedown: function(e){
@@ -99,6 +100,7 @@ Input.prototype = {
         for(var i = 0; i<pointers.length; i++){
             this.downs[pointers[i].identifier].add(pointers[i].pageX, pointers[i].pageY);
         };
+        console.log(this.downs);
         return false;
     },
     mousemove: function(e){
@@ -121,6 +123,7 @@ Input.prototype = {
         for(var i = 0; i<pointers.length; i++){
             this.downs[pointers[i].identifier].end();
         }
+        console.log(this.downs);
         return false;
     },
     touchcancel: function(e){
