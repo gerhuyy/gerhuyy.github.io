@@ -48,7 +48,7 @@ var Input = function(id, care){
     var obj = this;
     //setting the events listeners
     function listen(event){
-        return this.elem.addEventListener(event, function(e){return obj[event](e)});
+        return obj.elem.addEventListener(event, function(e){return obj[event](e)});
     }
     listen("touchstart");
     listen("mousedown");
