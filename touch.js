@@ -80,7 +80,7 @@ Input.prototype = {
         this.y = e.pageY;
         this.down = Down(e.pageX, e.pageY, this.care);
         return false;
-    }
+    },
     start: function(e){
         if(e.touches){
             var pointers = this.getPointerEvent(e);
@@ -122,21 +122,21 @@ Input.prototype = {
             this.downs[pointers[i].identifier].end();
         }
         return false;
-    }
+    },
     touchcancel: function(e){
        var pointers = this.getTouches(e);
         for(var i = 0; i<pointers.length; i++){
             delete this.downs[pointers[i].identifier];
         }
         return false;
-    }
+    },
     mouseup: function(e){
         this.state = false;
         this.x = e.pageX;
         this.y = e.pageY;
         this.down.end()
         return false;
-    }
+    },
     end: function(e){
         console.log(e);
         this.state = false;
