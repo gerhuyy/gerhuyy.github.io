@@ -69,7 +69,7 @@ Input.prototype = {
         var pointers = this.getTouches(e);
         this.downs = [];
         for(var i = 0; i<pointers.length; i++){
-            this.downs[pointers[i].identifier] = Down(pointers[i].pageX, pointers[i].pageY, this.care);
+            this.downs[pointers[i].identifier] = new Down(pointers[i].pageX, pointers[i].pageY, this.care);
         };
         this.down = this.downs[pointers[0].identifier];
         return false;
@@ -78,7 +78,7 @@ Input.prototype = {
         this.state = true;
         this.x = e.pageX;
         this.y = e.pageY;
-        this.down = Down(e.pageX, e.pageY, this.care);
+        this.down = new Down(e.pageX, e.pageY, this.care);
         return false;
     },
     start: function(e){
