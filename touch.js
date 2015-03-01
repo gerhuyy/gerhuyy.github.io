@@ -47,6 +47,18 @@ var Input = function(id, care){
     this.y = 0;
     var obj = this;
     //setting the events listeners
+    function listen(event){
+        return this.elem.addEventListener(event, function(e){return obj[event](e)});
+    }
+    listen("touchstart");
+    listen("mousedown");
+    
+    listen("touchmove");
+    listen("mousemove");
+    
+    listen("touchend");
+    listen("touchcancel");
+    listen("mouseup");
     this.elem.addEventListener("touchstart", function(e){return obj.start(e)});
     this.elem.addEventListener("mousedown", function(e){return obj.start(e)});
 
@@ -60,6 +72,15 @@ var Input = function(id, care){
 }
 Input.prototype = {
     downs: [],
+    touchstart: function(e){
+        var pointers = this.getPointerEvent(e);
+        this.downs = [];
+        for(var i = 0; i<pointers.length; i++){
+            this.downs[pointers[i].identifier] = Down(pointers[i].pageX, pointers[i].pageY, this.care);
+        };
+        this.down = this.downs[pointers[0].identifier];
+    };
+    mousedown
     start: function (e){
         e.preventDefault();
         if(e.touches){
